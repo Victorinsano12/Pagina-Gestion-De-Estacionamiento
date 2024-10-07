@@ -1,199 +1,196 @@
-
-const parkingLot = {}; 
-
-parkingLot['A1'] = { status: 'Free', documentNumber: '', userName: '' };
-parkingLot['A2'] = { status: 'Free', documentNumber: '', userName: '' };
-parkingLot['A3'] = { status: 'Free', documentNumber: '', userName: '' };
-parkingLot['A4'] = { status: 'Free', documentNumber: '', userName: '' };
-parkingLot['B1'] = { status: 'Free', documentNumber: '', userName: '' };
-parkingLot['B2'] = { status: 'Free', documentNumber: '', userName: '' };
-parkingLot['B3'] = { status: 'Free', documentNumber: '', userName: '' };
-parkingLot['B4'] = { status: 'Free', documentNumber: '', userName: '' };
-
-
-function registerCar(event) {
-  event.preventDefault(); 
-
-  const documentNumber = document.getElementById("documentNumber").value;
-  const userName = document.getElementById("userName").value;
-  const parkingSpot = document.getElementById("parkingSpot").value;
-
-
-  const documentNumberError = document.getElementById("documentNumberError");
-  const userNameError = document.getElementById("userNameError");
-  documentNumberError.textContent = "";
-  userNameError.textContent = "";
-
-  if (!/^\d+$/.test(documentNumber)) {
-    documentNumberError.textContent = "El número de documento debe contener solo números.";
-    return;
-  }
-  if (!/^[a-zA-Z]+$/.test(userName)) {
-    userNameError.textContent = "El nombre de usuario debe contener solo letras.";
-    return;
-  }
-
-  if (parkingLot[parkingSpot].status === 'Free') {
-    parkingLot[parkingSpot].status = 'Occupied';
-    parkingLot[parkingSpot].documentNumber = documentNumber;
-    parkingLot[parkingSpot].userName = userName;
-    updateParkingLot(); 
-    document.getElementById("registrationForm").reset(); 
-  } else {
-    alert("El lugar de estacionamiento ya está ocupado.");
-  }
-}
-
-
-function updateParkingLot() {
-  const parkingLotContainer = document.getElementById("parkingLot");
-  parkingLotContainer.innerHTML = ''; 
-
-
-  const leftColumn = document.createElement('div');
-  leftColumn.classList.add('col-md-5', 'mb-3');
-  for (let i = 1; i <= 4; i++) {
-    const parkingSpot = document.createElement('div');
-    parkingSpot.classList.add('parking-spot');
-    parkingSpot.dataset.spot = `A${i}`; 
-    parkingSpot.textContent = `A${i}`;
-
-    if (parkingLot[`A${i}`].status === 'Occupied') {
-      parkingSpot.classList.add('occupied');
-      parkingSpot.title = `Lugar: A${i}\nNúmero de Documento: ${parkingLot[`A${i}`].documentNumber}\nNombre: ${parkingLot[`A${i}`].userName}`;
-    } else {
-      parkingSpot.classList.add('free');
-    }
-
-   
-    parkingSpot.addEventListener('click', function() {
-      const modal = new bootstrap.Modal(document.getElementById('parkingSpotInfoModal')); // Crea una instancia del modal
-      const modalInfo = document.getElementById('modalInfo');
-      const spot = this.dataset.spot; 
-
-      if (parkingLot[spot].status === 'Occupied') {
-        modalInfo.innerHTML = ''; 
-        const fila = document.createElement('li');
-        fila.textContent = `Fila: ${spot}`;
-        modalInfo.appendChild(fila);
-
-        const documento = document.createElement('li');
-        documento.textContent = `Número de documento: ${parkingLot[spot].documentNumber}`;
-        modalInfo.appendChild(documento);
-
-        const nombre = document.createElement('li');
-        nombre.textContent = `Nombre: ${parkingLot[spot].userName}`;
-        modalInfo.appendChild(nombre);
-
-        modal.show();
-      } else {
-        modalInfo.innerHTML = ''; 
-        const fila = document.createElement('li');
-        fila.textContent = `Fila: ${spot}`;
-        modalInfo.appendChild(fila);
-
-        const estado = document.createElement('li');
-        estado.textContent = `Estado: Libre`;
-        modalInfo.appendChild(estado);
-
-        modal.show(); 
+let data = {
+    
+    usuarios: [
+      {
+        "nombre": "Juan Perez",
+        "email": "juan.perez@example.com",
+        "usuario": "juanp",
+        "password": "12345",
+        "role": "regular"
+      },
+      {
+        "nombre": "Maria Lopez",
+        "email": "maria.lopez@example.com",
+        "usuario": "mlopez",
+        "password": "54321",
+        "role": "admin"
       }
-    });
-
-    leftColumn.appendChild(parkingSpot);
-  }
-
-
-  const yellowLine = document.createElement('div');
-  yellowLine.classList.add('col-md-2', 'yellow-line'); 
-  
-
-  const rightColumn = document.createElement('div');
-  rightColumn.classList.add('col-md-5');
-  for (let i = 1; i <= 4; i++) {
-    const parkingSpot = document.createElement('div');
-    parkingSpot.classList.add('parking-spot');
-    parkingSpot.dataset.spot = `B${i}`;
-    parkingSpot.textContent = `B${i}`; 
-
-    if (parkingLot[`B${i}`].status === 'Occupied') {
-      parkingSpot.classList.add('occupied');
-      parkingSpot.title = `Lugar: B${i}\nNúmero de Documento: ${parkingLot[`B${i}`].documentNumber}\nNombre: ${parkingLot[`B${i}`].userName}`;
-    } else {
-      parkingSpot.classList.add('free');
+    ],
+    sesion: {
+      loggedInUser: null
+    },
+    mensajes: {
+      registroExitoso: "¡Registro exitoso! Ahora puedes iniciar sesión.",
+      correoYaRegistrado: "Este correo ya está registrado",
+      inicioSesionExitoso: "¡Inicio de sesión exitoso!",
+      correoOContrasenaIncorrectos: "Correo o contraseña incorrectos",
+      accesoDenegado: "Acceso denegado. Debes iniciar sesión.",
+      accesoDenegadoRol: "Acceso denegado. Solo los usuarios regulares pueden acceder a esta página."
     }
 
     
-    parkingSpot.addEventListener('click', function() {
-      const modal = new bootstrap.Modal(document.getElementById('parkingSpotInfoModal')); 
-      const modalInfo = document.getElementById('modalInfo');
-      const spot = this.dataset.spot; 
-      if (parkingLot[spot].status === 'Occupied') {
-        modalInfo.innerHTML = ''; 
-        const fila = document.createElement('li');
-        fila.textContent = `Fila: ${spot}`;
-        modalInfo.appendChild(fila);
+  };
 
-        const documento = document.createElement('li');
-        documento.textContent = `Número de documento: ${parkingLot[spot].documentNumber}`;
-        modalInfo.appendChild(documento);
-
-        const nombre = document.createElement('li');
-        nombre.textContent = `Nombre: ${parkingLot[spot].userName}`;
-        modalInfo.appendChild(nombre);
-
-        modal.show(); 
-      } else {
-        modalInfo.innerHTML = ''; 
-        const fila = document.createElement('li');
-        fila.textContent = `Fila: ${spot}`;
-        modalInfo.appendChild(fila);
-
-        const estado = document.createElement('li');
-        estado.textContent = `Estado: Libre`;
-        modalInfo.appendChild(estado);
-
-        modal.show(); 
-      }
-    });
-
-    rightColumn.appendChild(parkingSpot);
-  }
-
-  parkingLotContainer.appendChild(leftColumn);
-  parkingLotContainer.appendChild(yellowLine);
-  parkingLotContainer.appendChild(rightColumn);
+// Cargar usuarios registrados del localStorage al inicio
+function cargarUsuarios() {
+    const usuariosGuardados = Object.keys(localStorage).filter(key => key.startsWith("usuario_"));
+    data.usuarios = usuariosGuardados.map(key => JSON.parse(localStorage.getItem(key)));
 }
 
+// Función para iniciar sesión
+function iniciarSesion(event) {
+    event.preventDefault();
 
-function searchUser(event) {
-  event.preventDefault(); 
-  const searchInput = document.getElementById("searchInput").value;
-  let foundSlot = null;
+    const email = document.querySelector('.formulario__login input[type="text"]').value;
+    const password = document.querySelector('.formulario__login input[type="password"]').value;
 
-  for (const slot in parkingLot) {
-    if (parkingLot[slot].status === 'Occupied') {
-      if (parkingLot[slot].documentNumber === searchInput || parkingLot[slot].userName.toLowerCase() === searchInput.toLowerCase()) {
-        foundSlot = slot;
-        break;
-      }
+    const usuarioGuardado = data.usuarios.find(user => user.email === email);
+
+    if (usuarioGuardado && usuarioGuardado.password === password) {
+        alert(data.mensajes.inicioSesionExitoso);
+        localStorage.setItem("loggedInUser", JSON.stringify(usuarioGuardado));
+
+        if (usuarioGuardado.role === "admin") {
+            window.location.href = "admin.html"; // Redirigir a la página de administrador
+        } else {
+            window.location.href = "Parking.html"; // Redirigir a la página de usuario regular
+        }
+    } else {
+        alert(data.mensajes.correoOContrasenaIncorrectos);
     }
-  }
+}
 
-  if (foundSlot) {
-    alert(`El usuario se encuentra en el lugar ${foundSlot}`);
-  } else {
-    alert("No se encontró el usuario");
-  }
+function mostrarBienvenida(nombreUsuario) {
+    const bienvenidaDiv = document.getElementById("bienvenida");
+    bienvenidaDiv.innerHTML = `¡Bienvenido, ${nombreUsuario}! Aquí está tu espacio.`;
+}
+
+// Función para registrar usuario
+function register(event) {
+    event.preventDefault();
+
+    const nombre = document.querySelector('.formulario__register input[placeholder="Nombre completo"]').value;
+    const email = document.querySelector('.formulario__register input[placeholder="Correo Electronico"]').value;
+    const usuario = document.querySelector('.formulario__register input[placeholder="Usuario"]').value;
+    const password = document.querySelector('.formulario__register input[placeholder="Contraseña"]').value;
+    const role = document.getElementById("selectRole").value;
+
+    if (!nombre || !email || !usuario || !password) {
+        alert("Por favor, completa todos los campos antes de registrarte.");
+        return;
+    }
+
+    if (localStorage.getItem(`usuario_${email}`)) {
+        alert(data.mensajes.correoYaRegistrado);
+    } else {
+        const nuevoUsuario = {
+            nombre: nombre,
+            email: email,
+            usuario: usuario,
+            password: password,
+            role: role
+        };
+        localStorage.setItem(`usuario_${email}`, JSON.stringify(nuevoUsuario)); // Guardar el usuario en localStorage
+        alert(data.mensajes.registroExitoso);
+        cargarUsuarios(); // Actualizar la lista de usuarios
+        document.querySelector('.formulario__register').reset(); // Limpiar el formulario
+    }
+}
+
+// Verificación de acceso a Parking.html
+function verificarAccesoParking() {
+    const usuarioLogueado = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    if (!usuarioLogueado) {
+        alert(data.mensajes.accesoDenegado);
+        window.location.href = "Home.html"; // Redirigir si no está logueado
+    } else if (usuarioLogueado.role !== "regular" && usuarioLogueado.role !== "admin") {
+        alert(data.mensajes.accesoDenegadoRol);
+        window.location.href = "Home.html"; // Redirigir si no es ni regular ni admin
+    }
 }
 
 
-const registrationForm = document.getElementById("registrationForm");
-registrationForm.addEventListener('submit', registerCar);
 
 
-const searchForm = document.getElementById("searchForm");
-searchForm.addEventListener('submit', searchUser);
+// Ejecutar la verificación de sesión cuando se carga el documento
+document.addEventListener("DOMContentLoaded", function() {
+    cargarUsuarios(); // Cargar usuarios al inicio
+    const currentPage = window.location.pathname.split('/').pop();
+    if (currentPage === "Parking.html") {
+        verificarAccesoParking(); // Verificar acceso si estamos en Parking.html
+    }
+});
+
+// Función para cerrar sesión
+function cerrarSesion() {
+    localStorage.removeItem("loggedInUser");
+    alert("Sesión cerrada. Redirigiendo a la página de inicio.");
+    window.location.href = "Home.html"; // Redirigir al inicio de sesión después de cerrar sesión
+}
+
+// Inicialización de botones
+document.getElementById("btn__iniciar-sesion").addEventListener("click", mostrarIniciarSesion);
+document.getElementById("btn__registrarse").addEventListener("click", mostrarRegistro);
+document.getElementById("btn__submit-register").addEventListener("click", register);
+document.getElementById("btn__submit-login").addEventListener("click", iniciarSesion);
+window.addEventListener("resize", anchoPage);
+
+// Funciones de interfaz (no se han cambiado)
+var formulario_login = document.querySelector(".formulario__login");
+var formulario_register = document.querySelector(".formulario__register");
+var contenedor_login_register = document.querySelector(".contenedor__login-register");
+var caja_trasera_login = document.querySelector(".caja__trasera-login");
+var caja_trasera_register = document.querySelector(".caja__trasera-register");
+
+anchoPage();
+
+function anchoPage() {
+    if (window.innerWidth > 850) {
+        caja_trasera_register.style.display = "block";
+        caja_trasera_login.style.display = "block";
+    } else {
+        caja_trasera_register.style.display = "block";
+        caja_trasera_register.style.opacity = "1";
+        caja_trasera_login.style.display = "none";
+        formulario_login.style.display = "block";
+        contenedor_login_register.style.left = "0px";
+        formulario_register.style.display = "none";
+    }
+}
+
+function mostrarIniciarSesion() {
+    if (window.innerWidth > 850) {
+        formulario_login.style.display = "block";
+        contenedor_login_register.style.left = "10px";
+        formulario_register.style.display = "none";
+        caja_trasera_register.style.opacity = "1";
+        caja_trasera_login.style.opacity = "0";
+    } else {
+        formulario_login.style.display = "block";
+        contenedor_login_register.style.left = "0px";
+        formulario_register.style.display = "none";
+        caja_trasera_register.style.display = "block";
+        caja_trasera_login.style.display = "none";
+    }
+}
+
+function mostrarRegistro() {
+    if (window.innerWidth > 850) {
+        formulario_register.style.display = "block";
+        contenedor_login_register.style.left = "410px";
+        formulario_login.style.display = "none";
+        caja_trasera_register.style.opacity = "0";
+        caja_trasera_login.style.opacity = "1";
+    } else {
+        formulario_register.style.display = "block";
+        contenedor_login_register.style.left = "0px";
+        formulario_login.style.display = "none";
+        caja_trasera_register.style.display = "none";
+        caja_trasera_login.style.display = "block";
+        caja_trasera_login.style.opacity = "1";
+    }
+}
 
 
-updateParkingLot();
+
