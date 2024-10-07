@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="../Css/estilosadmin.css">
+</head>
+<body>
+    <header>
+        <h1>Panel de Administración</h1>
+        <div id="bienvenida">
+            <p>Bienvenido, <span id="nombreUsuario"></span></p>
+        </div> 
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="Parking.html">Reservar Estacionamiento</a></li>
+                <li><a href="home.html">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+        <h2>Vehículos Registrados</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Placa</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="vehiculos-detectados">
+                <!-- Aquí se insertarán dinámicamente los datos de la API -->
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Opciones de Administración</h2>
+        <ul>
+            <li>Ver registros de entrada y salida</li>
+            <li>Administrar espacios de estacionamiento</li>
+            <li>Configurar cámaras</li>
+        </ul>
+    </section>
+
+    <script src="../Js/Admin.js"></script>
+</body>
+</html>
