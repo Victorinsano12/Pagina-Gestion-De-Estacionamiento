@@ -1,0 +1,12 @@
+ // Función para mostrar el nombre del usuario logueado
+ function mostrarNombreUsuario() {
+    const usuarioLogueado = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (usuarioLogueado) {
+        // Asigna el nombre de usuario al span en el HTML
+        const nombreUsuarioSpan = document.getElementById('nombreUsuario');
+        nombreUsuarioSpan.textContent = usuarioLogueado.usuario; // Muestra el nombre de usuario
+    }
+}
+
+// Ejecutar la función cuando la página se carga
+document.addEventListener("DOMContentLoaded", mostrarNombreUsuario);
