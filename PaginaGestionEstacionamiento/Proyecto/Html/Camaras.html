@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cámaras en Tiempo Real</title>
+    <link rel="stylesheet" href="../Css/Stylecamaras.css"> <!-- Vincular hoja de estilos CSS -->
+
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li>
+                <button class="btn hidden-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">---</button>
+            </li>
+            <li><a href="./Parking.html" class="btn hidden-btn">Parking</a></li>
+            <li class="search-tab">
+                <form id="buscarform" action="#" method="GET">
+                    <div class="search-container">
+                        <input type="text" id="s" placeholder="Buscar...">
+                        <button class="search hidden-btn" type="submit">🔍</button>
+                    </div>
+                </form>
+            </li>
+            <li><a href="./admin.html" class="btn hidden-btn">Admin</a></li>
+            <li><a href="./index.html" class="btn hidden-btn">Volver al Inicio</a></li> <!-- Botón para volver al index.html -->
+        </ul>
+    </nav>
+
+    <!-- Contenido de la página -->
+    <div class="video-container">
+        <h2>Cámara de Entrada</h2>
+        <img class="video-frame" src="http://localhost:5000/video_feed" alt="Cámara en Tiempo Real">
+    </div>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>&copy; 2024 Gestión de Estacionamiento. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
